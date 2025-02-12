@@ -103,7 +103,7 @@ st.markdown("""
 def load_data():
     file_path = 'dataset/data.xlsx'
     df = pd.read_excel(file_path, parse_dates=["Opened At", "Resolved Date"])
-    df.fillna("", inplace=True)
+    df.fillna(0, inplace=True)
     
     if "Resolved Time (days)" not in df.columns:
         df["Resolved Time (days)"] = (df["Resolved Date"] - df["Opened At"]).dt.days
