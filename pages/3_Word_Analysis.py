@@ -345,6 +345,8 @@ with st.container():
         wc_close = generate_gradient_wordcloud(close_words, 'plasma')
         if wc_close is not None:
             st.image(wc_close, use_container_width=True)
+        else:
+            st.warning("Word cloud generation failed. Try again with different data.")
             st.download_button(
                 "📥 Download Close Notes Words",
                 "\n".join(close_words),
@@ -355,8 +357,10 @@ with st.container():
         st.markdown("#### 🌠 Short Descriptions Word Cloud")
         short_words = [word for sublist in df["cleaned_short_desc"] for word in sublist]
         wc_short = generate_gradient_wordcloud(short_words, 'viridis')
-        if wc_short is not None:
-            st.image(wc_short, use_container_width=True)
+        if wc_close is not None:
+            st.image(wc_close, use_container_width=True)
+        else:
+            st.warning("Word cloud generation failed. Try again with different data.")
             st.download_button(
                 "📥 Download Short Desc Words",
                 "\n".join(short_words),
