@@ -175,8 +175,10 @@ with st.container():
     st.markdown("#### 📊 Filtered Results")
     st.dataframe(
         filtered_df.style
-        .background_gradient(subset=["Resolved Time (days)"], cmap='Blues')
-        .format({"Resolved Time (days)": "{:.1f}"}),
+        # .background_gradient(subset=["Resolved Time (days)"], cmap='Blues')
+        # .format({"Resolved Time (days)": "{:.1f}"}),
+        .background_gradient(subset=["Ticket Age"], cmap='Blues')
+        .format({"Ticket Age": "{:.1f}"}),
         use_container_width=True,
         height=400
     )
@@ -199,7 +201,8 @@ with col1:
     """, unsafe_allow_html=True)
 
 with col2:
-    avg_res_time = df["Resolved Time (days)"].mean()
+    # avg_res_time = df["Resolved Time (days)"].mean()
+    avg_res_time = df["Ticket Age"].mean()
     st.markdown(f"""
         <div class="metric-box">
             <div style='color: #94a3b8; font-size:0.9rem'>Avg Resolution</div>
