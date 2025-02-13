@@ -99,18 +99,39 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# @st.cache_data
+# def load_data():
+#     file_path = 'dataset/data.xlsx'
+#     df = pd.read_excel(file_path, parse_dates=["Opened At", "Resolved Date"])
+#     df.fillna(0, inplace=True)
+    
+#     if "Resolved Time (days)" not in df.columns:
+#         df["Resolved Time (days)"] = (df["Resolved Date"] - df["Opened At"]).dt.days
+    
+#     return df
+
+
+
 @st.cache_data
 def load_data():
     file_path = 'dataset/data.xlsx'
-    df = pd.read_excel(file_path, parse_dates=["Opened At", "Resolved Date"])
-    df.fillna(0, inplace=True)
+    df = pd.read_excel(file_path)
     
+    # Ensure datetime conversion
+    df["Opened At"] = pd.to_datetime(df["Opened At"], errors='coerce')
+    df["Resolved Date"] = pd.to_datetime(df["Resolved Date"], errors='coerce')
+
+    # Handle NaN values
+    df.fillna(0, inplace=True)
+
     if "Resolved Time (days)" not in df.columns:
         df["Resolved Time (days)"] = (df["Resolved Date"] - df["Opened At"]).dt.days
-    
+
     return df
 
 df = load_data()
+
+
 
 # Page Title
 st.markdown("""
