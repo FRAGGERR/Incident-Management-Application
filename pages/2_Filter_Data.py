@@ -216,6 +216,7 @@
 import streamlit as st
 import pandas as pd
 
+st.set_page_config(layout="wide")
 pd.set_option("styler.render.max_elements", 2_000_000)  # Increase from default 262,144
 
 # Custom CSS styling
