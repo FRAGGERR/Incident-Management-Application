@@ -114,20 +114,11 @@ st.markdown("""
 
 @st.cache_data
 def load_data():
-    file_path = 'dataset/data.xlsx'
-    df = pd.read_excel(file_path)
-    
-    # Ensure datetime conversion
-    df["Opened At"] = pd.to_datetime(df["Opened At"], errors='coerce')
-    df["Resolved Date"] = pd.to_datetime(df["Resolved Date"], errors='coerce')
-
-    # Handle NaN values
+    df = pd.read_excel("dataset/Incident_PreProcessed.xlsx")  # Adjust the path
     df.fillna(0, inplace=True)
-
-    if "Resolved Time (days)" not in df.columns:
-        df["Resolved Time (days)"] = (df["Resolved Date"] - df["Opened At"]).dt.days
-
+    
     return df
+
 
 df = load_data()
 
