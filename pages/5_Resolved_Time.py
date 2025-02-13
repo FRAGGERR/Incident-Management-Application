@@ -85,6 +85,10 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
+st.set_page_config(layout="wide")
+
+
 # Custom CSS Styling
 st.markdown("""
     <style>
