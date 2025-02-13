@@ -78,6 +78,10 @@ import joblib
 from transformers import BartTokenizer, BartForConditionalGeneration
 from streamlit_feedback import streamlit_feedback
 
+
+st.set_page_config(layout="wide")
+
+
 # Custom CSS Styling
 st.markdown("""
     <style>
