@@ -132,6 +132,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import string
 
+st.set_page_config(layout="wide")
+
 # Custom CSS Styling
 st.markdown("""
     <style>
