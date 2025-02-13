@@ -75,6 +75,8 @@
 import streamlit as st
 import torch
 import joblib
+import gdown
+import os
 from transformers import BartTokenizer, BartForConditionalGeneration
 from streamlit_feedback import streamlit_feedback
 
@@ -138,18 +140,53 @@ st.markdown("""
 
 # Load tokenizer and model
 @st.cache_resource
+# def load_models():
+#     tokenizer = BartTokenizer.from_pretrained("facebook/bart-base")
+#     model = BartForConditionalGeneration.from_pretrained("facebook/bart-base")
+#     model.load_state_dict(torch.load("/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/bart_model.pth", map_location=torch.device("cpu")))
+#     model.eval()
+    
+#     resolution_time_model = joblib.load('/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/resolution_time_model.pkl')
+#     vectorizer = joblib.load('/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/tfidf_vectorizer.pkl')
+    
+#     return tokenizer, model, resolution_time_model, vectorizer
+
+# tokenizer, model, resolution_time_model, vectorizer = load_models()
+
 def load_models():
+    # Google Drive File IDs
+    file_ids = {
+        "bart_model": "13MZvpd4xo27Wi4BSUlJSLYz_E1sQgNSf",
+        "resolution_model": "1xbFHgxHqRwGvez4xLz4qCt2g43xjDCXK",
+        "vectorizer": "19ZQFmhlrjQNQ-y7xPz0jpMtNlolqSTEp",
+    }
+    
+    # Temporary paths
+    model_paths = {
+        "bart_model": "bart_model.pth",
+        "resolution_model": "resolution_time_model.pkl",
+        "vectorizer": "tfidf_vectorizer.pkl",
+    }
+    
+    # Download each file
+    for key, file_id in file_ids.items():
+        if not os.path.exists(model_paths[key]):
+            gdown.download(f"https://drive.google.com/uc?id={file_id}", model_paths[key], quiet=False)
+
+    # Load Models
     tokenizer = BartTokenizer.from_pretrained("facebook/bart-base")
     model = BartForConditionalGeneration.from_pretrained("facebook/bart-base")
-    model.load_state_dict(torch.load("/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/bart_model.pth", map_location=torch.device("cpu")))
+    model.load_state_dict(torch.load(model_paths["bart_model"], map_location=torch.device("cpu")))
     model.eval()
     
-    resolution_time_model = joblib.load('/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/resolution_time_model.pkl')
-    vectorizer = joblib.load('/Users/hardikchhipa/Desktop/Data_Manipulations_Projects/Incident Autodesk/models/tfidf_vectorizer.pkl')
+    resolution_time_model = joblib.load(model_paths["resolution_model"])
+    vectorizer = joblib.load(model_paths["vectorizer"])
     
     return tokenizer, model, resolution_time_model, vectorizer
 
+# Load models
 tokenizer, model, resolution_time_model, vectorizer = load_models()
+
 
 def generate_close_note(description):
     inputs = tokenizer(description, return_tensors="pt", padding="max_length", truncation=True, max_length=128)
